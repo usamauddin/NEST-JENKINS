@@ -16,19 +16,17 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                    ws('/home/ubuntu/my-project') {
-                    sh '''
-                        if [ -d ".git" ]; then
-                            echo "Repository already exists. Skipping clone."
-                        else
-                            echo "Repository not found. Cloning..."
-                            git clone -b descriptive-pipeline \
-                            https://github.com/usamauddin/NEST-JENKINS .
-                        fi
-                    '''
+                sh '''
+                    if [ -d ".git" ]; then
+                        echo "Repository already exists. Skipping clone."
+                    else
+                        echo "Repository not found. Cloning..."
+                        git clone -b descriptive-pipeline \
+                        https://github.com/usamauddin/NEST-JENKINS .
+                    fi
 
-                    sh 'ls -la'
-                    }
+                    ls -la
+                '''
             }
         }
 
