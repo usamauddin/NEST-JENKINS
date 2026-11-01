@@ -1,5 +1,6 @@
+
 pipeline {
-    agent any 
+    agent any
 
     environment {
         CONTAINER_NAME = "nest-container"
@@ -12,41 +13,44 @@ pipeline {
 
         stage("Clone Repo") {
             steps {
-                git branch: 'descriptive-pipeline', url : "https://github.com/usamauddin/NEST-JENKINS"
+                git branch: "descriptive-pipeline",
+                    url: "https://github.com/usamauddin/NEST-JENKINS"
             }
         }
 
-         stage("Build Docker Image") {
+        stage("Build Docker Image") {
             steps {
-                sh 'docker build -t $IMAGE_NAME'
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-          stage("Stop And Remove Previous Container") {
+        stage("Stop And Remove Previous Container") {
             steps {
                 sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm $CONTAINER_NAME || true
-                   '''
+                '''
             }
         }
 
-           stage("Docker Run Container") {
+        stage("Docker Run Container") {
             steps {
                 sh '''
-                    docker run -d -p ${PORT}:${PORT}  --name $IMAGE_NAME
-                   '''
+                    docker run -d \
+                    -p ${PORT}:${PORT} \
+                    --name $CONTAINER_NAME \
+                    $IMAGE_NAME
+                '''
             }
         }
 
-
-            stage("Send Email Notification") {
+        stage("Send Email Notification") {
             steps {
-               emailtext{
-                subject:'Nest Backend Deployed'
-                body: 'Nest Backend Deployed On EC2'
-                to:"${EMAIL}"
-               }
+                emailext(
+                    subject: 'Nest Backend Deployed',
+                    body: 'Nest Backend Deployed On EC2',
+                    to: "${EMAIL}"
+                )
             }
         }
     }
