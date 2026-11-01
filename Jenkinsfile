@@ -2,6 +2,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     environment {
         CONTAINER_NAME = 'nest-container'
         IMAGE_NAME = 'nest-image'
