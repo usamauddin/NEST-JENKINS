@@ -3,28 +3,38 @@ pipeline {
     agent any
 
     environment {
-        CONTAINER_NAME = "nest-container"
-        IMAGE_NAME = "nest-image"
-        EMAIL = "usamahafeez948@gmail.com"
-        PORT = "3000"
+        CONTAINER_NAME = 'nest-container'
+        IMAGE_NAME = 'nest-image'
+        EMAIL = 'usamahafeez948@gmail.com'
+        PORT = '3000'
     }
 
     stages {
-
-        stage("Clone Repo") {
+        stage('Clone Repo') {
             steps {
-                git branch: "descriptive-pipeline",
-                    url: "https://github.com/usamauddin/NEST-JENKINS"
+                    ws('/home/ubuntu/my-project') {
+                    sh '''
+                        if [ -d ".git" ]; then
+                            echo "Repository already exists. Skipping clone."
+                        else
+                            echo "Repository not found. Cloning..."
+                            git clone -b descriptive-pipeline \
+                            https://github.com/usamauddin/NEST-JENKINS .
+                        fi
+                    '''
+
+                    sh 'ls -la'
+                    }
             }
         }
 
-        stage("Build Docker Image") {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage("Stop And Remove Previous Container") {
+        stage('Stop And Remove Previous Container') {
             steps {
                 sh '''
                     docker stop $CONTAINER_NAME || true
@@ -33,7 +43,7 @@ pipeline {
             }
         }
 
-        stage("Docker Run Container") {
+        stage('Docker Run Container') {
             steps {
                 sh '''
                     docker run -d \
@@ -44,7 +54,7 @@ pipeline {
             }
         }
 
-        stage("Send Email Notification") {
+        stage('Send Email Notification') {
             steps {
                 emailext(
                     subject: 'Nest Backend Deployed',
