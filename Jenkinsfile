@@ -20,8 +20,8 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git branch: 'descriptive-pipeline', url: 'git clone -b descriptive-pipeline \
-                        https://github.com/usamauddin/NEST-JENKINS'
+                  git branch: 'descriptive-pipeline',
+                    url: 'https://github.com/usamauddin/NEST-JENKINS'
             }
         }
 
