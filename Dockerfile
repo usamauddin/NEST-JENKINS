@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:26-slim
 # create app directory inside the container
 WORKDIR /app 
 # Prisma needs OpenSSL on slim images
