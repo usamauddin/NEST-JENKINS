@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 # means copy all file start from package and ends on json (.) means into current directory
 COPY package*.json . 
-Run npm install
+Run npm ci
 # First dot means your working directory and second means docker working directory
 COPY . .
 # Generate the Prisma client
