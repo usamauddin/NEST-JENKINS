@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:22-alpine
 # create app directory inside the container
 WORKDIR /app 
 # means copy all file start from package and ends on json (.) means into current directory
