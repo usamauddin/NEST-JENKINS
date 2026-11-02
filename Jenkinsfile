@@ -2,10 +2,10 @@
 pipeline {
     agent any
 
-     triggers {
+    triggers {
         githubPush()
     }
-    
+
     options {
         skipDefaultCheckout(true)
     }
@@ -20,17 +20,8 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                sh '''
-                    if [ -d ".git" ]; then
-                        echo "Repository already exists. Skipping clone."
-                    else
-                        echo "Repository not found. Cloning..."
-                        git clone -b descriptive-pipeline \
-                        https://github.com/usamauddin/NEST-JENKINS .
-                    fi
-
-                    ls -la
-                '''
+                git branch: 'descriptive-pipeline', url: 'git clone -b descriptive-pipeline \
+                        https://github.com/usamauddin/NEST-JENKINS'
             }
         }
 
